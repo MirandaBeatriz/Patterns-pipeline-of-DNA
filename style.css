@@ -13,7 +13,7 @@
 body{
     background:linear-gradient(50deg, #260224, #390440, #500859);
     background-repeat: no-repeat;
-    min-height: 100vh;
+    min-height: 150vh;
     padding: 70px;
     color: #fff;
 }
