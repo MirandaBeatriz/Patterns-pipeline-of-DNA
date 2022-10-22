@@ -14,94 +14,100 @@
     </py-config>
 </head>
 <body>
-    <py-env>    
-        - matplotlib
-    </py-env>
+    <div class="container">
 
-    <div id="plot"></div>
-    <div id="freq"></div>
-
-    <py-script output="plot">
-        from array import array
-        import matplotlib.pyplot as plt
-        import numpy as np
-        fig, ax = plt.subplots()
-
-        #---------------------------------#
-
-        Genome = "GGCTCACCGCAACCTCCACCGTCCTGAGTTAAAGTGATTCTCCTGTCTCAGCCCCCTGAGTAGCTAGGATTACAGGCGTGCGCCACCACACCCAGCTAATTTTTGTACTTTTAGTAGAGATGGGATTTCACCCTGTTGGTCAGGCTGGTCTTGAACTCCTGACCTAGTGATCTGCCCACCTTGGCCTCCCAAAGTGCTGGGATTACAGGCGTGAGCCACCACGCCTGGCTAGGGGAAGAGTGTTTTAAGAGCTCTGAGTAGAAGGGTCTAAGTGCAGACATCTTGGCTGTTGCTGAAGAATGTGACTCTCACCGCCTCCCTCTGACACTGTACCATCTCTTTTACCCCCATCCTTAGTCCACTCACGGAGGAGGCTGCCTTGATGGATTTGACTGCAGCTTCAAACACTTTCTTGGGCAAACGAAGGTTGGTGGTGCCACTGTCCACAATGCTCTTGTCATAGTTGTACTAAGAGGGAAAAGAGAGAGTTAAAAGAGTCAAAAGGTTTTTGATGCTGGGCTCTGGGCAGTAGGGGGTTACTGCTGGGGCCCCAGCTGGGTTGGCATCTTGGCTTTGGCACCTCCTAAGTGTACCTGCTTGGACAAGTTAACCTCTGTGCCTCAGTTCCTTCATCTCTAAAGTGAGGATAAAAATAGCACCTACCTCAAAGGGTTATTGTAAGGATTAAATAAATCAGCAATGTAAAGCACTTAGAATCGTGCCCAGCAGAGAGAAGGCACTTGGTAAATGTTTATTCTTGTTAATCTTGGGTGGGCAGGTAGTCTCCAAACTTGAAAATAAAAATACCTTGTTTAGTGCTTTTAAAAAAAAAAAAAAAAA"
-
-        tGen = len(Genome)
-        print("Tamanho genoma:", tGen)
-        x = np.arange(0,tGen)
-
-        def MinSkew(Genome):
-            min_skew=[]
-            Skew=[]
-            n=0
-            m=0
-            for i in range(len(Genome)):
-                if Genome[i]=="C":
-                    n-=1
-                    Skew.append(n)
-                    
-                elif Genome[i]=="G":
-                    n+=1
-                    Skew.append(n)
-
-                else:
-                    n=n
-                    Skew.append(n)
-
-            m= min(Skew)
-
-            for i in range(len(Skew)):
-                if Skew[i]<=m:
-                    min_skew.append(i)
-            
-            print ("Skew mínimo:" , m)
-            print ("Posição:", min_skew)
-            return (Skew)
-
-        Skew = MinSkew(Genome)
-        print(Skew)
-
-        plt.title("Diagrama Skew")
-        plt.xlabel("Posição")
-        plt.ylabel("Skew")
-        plt.plot(x, Skew)
-        fig
-    </py-script>
-
-    <py-script output="freq">
-        def FrequencyMap(Text, k):
-            freq = {}
-            n = len(Text)
-            for i in range (n-k+1):
-                Pattern = Text[i:i+k]
-                freq[Pattern] = 0
+        <h1>Faça o upload de um arquivo FASTA</h1>
+        <div>
+            <label for="file">Selecionar arquivo</label>
+            <input type="file" name="file" id="file">
+        </div>
+        
+        <py-env>    
+            - matplotlib
+        </py-env>
+    
+        <div class="table">
+            <div>
+                <small>Tamanho genoma</small>
+                <p id="tamanho"></p>
+            </div>
+            <div>
+                <small>Skew mínimo</small>
+                <p>2</p>
+            </div>
+        </div>
+    
+        <div id="plot"></div>
+        <div id="freq"></div>
+    
+        <py-script output="tamanho">
+            from array import array
+            import matplotlib.pyplot as plt
+            import numpy as np
+            fig, ax = plt.subplots()
+    
+            Genome = "GGCTCACCGCAACCTCCACCGTCCTGAGTTAAAGTGATTCTCCTGTCTCAGCCCCCTGAGTAGCTAGGATTACAGGCGTGCGCCACCACACCCAGCTAATTTTTGTACTTTTAGTAGAGATGGGATTTCACCCTGTTGGTCAGGCTGGTCTTGAACTCCTGACCTAGTGATCTGCCCACCTTGGCCTCCCAAAGTGCTGGGATTACAGGCGTGAGCCACCACGCCTGGCTAGGGGAAGAGTGTTTTAAGAGCTCTGAGTAGAAGGGTCTAAGTGCAGACATCTTGGCTGTTGCTGAAGAATGTGACTCTCACCGCCTCCCTCTGACACTGTACCATCTCTTTTACCCCCATCCTTAGTCCACTCACGGAGGAGGCTGCCTTGATGGATTTGACTGCAGCTTCAAACACTTTCTTGGGCAAACGAAGGTTGGTGGTGCCACTGTCCACAATGCTCTTGTCATAGTTGTACTAAGAGGGAAAAGAGAGAGTTAAAAGAGTCAAAAGGTTTTTGATGCTGGGCTCTGGGCAGTAGGGGGTTACTGCTGGGGCCCCAGCTGGGTTGGCATCTTGGCTTTGGCACCTCCTAAGTGTACCTGCTTGGACAAGTTAACCTCTGTGCCTCAGTTCCTTCATCTCTAAAGTGAGGATAAAAATAGCACCTACCTCAAAGGGTTATTGTAAGGATTAAATAAATCAGCAATGTAAAGCACTTAGAATCGTGCCCAGCAGAGAGAAGGCACTTGGTAAATGTTTATTCTTGTTAATCTTGGGTGGGCAGGTAGTCTCCAAACTTGAAAATAAAAATACCTTGTTTAGTGCTTTTAAAAAAAAAAAAAAAAA"
+    
+            tGen = len(Genome)
+            tGen
+        </py-script>
+    
+        <py-script output="plot">
+            x = np.arange(0,tGen)
+    
+            def MinSkew(Genome):
+                min_skew=[]
+                Skew=[]
+                n=0
+                m=0
+                for i in range(len(Genome)):
+                    if Genome[i]=="C":
+                        n-=1
+                        Skew.append(n)
+                        
+                    elif Genome[i]=="G":
+                        n+=1
+                        Skew.append(n)
+    
+                    else:
+                        n=n
+                        Skew.append(n)
+    
+                m= min(Skew)
+    
+                for i in range(len(Skew)):
+                    if Skew[i]<=m:
+                        min_skew.append(i)
+                
+                print ("Skew mínimo:" , m)
+                print ("Posição:", min_skew)
+                return (Skew)
+    
+            Skew = MinSkew(Genome)
+            print(Skew)
+    
+            plt.title("Diagrama Skew")
+            plt.xlabel("Posição")
+            plt.ylabel("Skew")
+            plt.plot(x, Skew)
+            fig
+        </py-script>
+    
+        <py-script output="freq">
+            def FrequencyMap(Text, k):
+                freq = {}
+                n = len(Text)
                 for i in range (n-k+1):
-                    if Text[i:i+k] == Pattern:
-                        freq[Pattern] = freq[Pattern] + 1
-            return freq
+                    Pattern = Text[i:i+k]
+                    freq[Pattern] = 0
+                    for i in range (n-k+1):
+                        if Text[i:i+k] == Pattern:
+                            freq[Pattern] = freq[Pattern] + 1
+                return freq
+        </py-script>
+    </div>
 
-        def FrequentWords(Text, k):
-            words = []
-            freq = FrequencyMap(Text, k)
-            print("Mapa de frequências:", freq)
-            m = max(freq.values())
-            count=0
-            for key in freq:
-                if freq[key] == m:
-                    pattern = key
-                    words.append(pattern)
-                count=count+1
-            return words
-
-        Words = FrequentWords(Genome, 3)
-        print("Sequências mais frequentes:", Words)
-    </py-script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script defer src="https://pyscript.net/latest/pyscript.js"></script>
 </body>
 </html>
