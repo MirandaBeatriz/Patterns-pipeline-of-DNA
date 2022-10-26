@@ -33,13 +33,22 @@
             </div>
             <div>
                 <small>Skew mínimo</small>
-                <p>2</p>
+                <p id="minSkew"></p>
             </div>
         </div>
     
         <div id="plot"></div>
-        <div id="freq"></div>
     
+        <div>
+            <h2>Mapa de frequências</h2>
+            <p id="freqMap"></p>
+        </div>
+        
+        <div>
+            <h2>Sequências mais frequentes</h2>
+            <p id="freqWords"></p>
+        </div>
+
         <py-script output="tamanho">
             from array import array
             import matplotlib.pyplot as plt
@@ -74,17 +83,14 @@
                         Skew.append(n)
     
                 m= min(Skew)
-    
+
                 for i in range(len(Skew)):
                     if Skew[i]<=m:
                         min_skew.append(i)
                 
-                print ("Skew mínimo:" , m)
-                print ("Posição:", min_skew)
                 return (Skew)
     
             Skew = MinSkew(Genome)
-            print(Skew)
     
             plt.title("Diagrama Skew")
             plt.xlabel("Posição")
@@ -92,8 +98,13 @@
             plt.plot(x, Skew)
             fig
         </py-script>
-    
-        <py-script output="freq">
+
+        <py-script output="minSkew">
+            minSkew = min(Skew)
+            minSkew
+        </py-script>
+
+        <py-script>
             def FrequencyMap(Text, k):
                 freq = {}
                 n = len(Text)
@@ -104,6 +115,27 @@
                         if Text[i:i+k] == Pattern:
                             freq[Pattern] = freq[Pattern] + 1
                 return freq
+        </py-script>
+
+        <py-script output="freqMap">
+            FreqMap = FrequencyMap(Genome, 3)
+            FreqMap
+        </py-script>
+    
+        <py-script output="freqWords">
+            def FrequentWords(Text, k):
+                words = []
+                m = max(FreqMap.values())
+                count=0
+                for key in FreqMap:
+                    if FreqMap[key] == m:
+                        pattern = key
+                        words.append(pattern)
+                    count=count+1
+                return words
+
+            Words = FrequentWords(Genome, 3)
+            Words
         </py-script>
     </div>
 
